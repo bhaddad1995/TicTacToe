@@ -1,0 +1,6 @@
+{
+    "scripts": {
+        "build": "javac tictactoe.java",
+        "start": "java tictactoe"
+    }
+}
