@@ -330,7 +330,7 @@ class tictactoe{
 
     public int checkLeftHorizontal(Pair p, String player){
         HashMap playedMoves = getMovesPlayed();
-        if(p.getValue().hashCode()!=1){
+        if(p.getValue().hashCode()!=1){ //checking to see if we are at the left edge of the board
             Pair adjecentPiece = getAdjecentPair(p, "left");
             if(playedMoves.get(adjecentPiece) == player){
                 return checkLeftHorizontal(adjecentPiece, player) + 1;
@@ -489,9 +489,12 @@ class tictactoe{
     }
 
     public void saveGame(){
+        String filename;
+        System.out.print("Enter a file name (do not include file extension): ");
+        filename = reader.nextLine(); // Scans the next token of the input.
         try{
-        saveMap();
-        saveGameValues();
+        //saveMap();
+        saveGameValues(filename);
         System.out.print("Game saved successfully! Exiting...\n");
         System.exit(0);
         }catch(Exception e){
@@ -502,55 +505,27 @@ class tictactoe{
 
     public void loadGame(){
         try{
-            loadSavedMap();
-            loadGameValues();
+            String filename;
+            System.out.print("Enter a saved file name (do not include file extension): ");
+            filename = reader.nextLine(); // Scans the next token of the input.
+            while(filename.isEmpty()){
+                filename = reader.nextLine();
+            }
+            //loadSavedMap();
+            loadGameValues(filename);
             System.out.print("Game loaded successfully!");
         }catch(Exception e){
                 System.err.print("Error loading game with exception:\n"+e);
                 System.exit(0);
         }
     }
-    public void saveMap(){
-        try {
-            FileOutputStream fileOut =
-            new FileOutputStream("./savedmap.txt");
-            ObjectOutputStream out = new ObjectOutputStream(fileOut);
-            out.writeObject(getMovesPlayed());
-            out.close();
-            fileOut.close();
-         } catch (IOException i) {
-            System.err.print("Error saving game with exception:\n"+i);
-            i.printStackTrace();
-            System.exit(0);
-         }
-    }
 
-    public void loadSavedMap(){
+    public void saveGameValues(String filename){
         try {
-            FileInputStream fileIn = new FileInputStream("./savedmap.txt");
-            ObjectInputStream in = new ObjectInputStream(fileIn);
-            HashMap e = (HashMap) in.readObject();
-            in.close();
-            fileIn.close();
-            setMovesPlayed(e);
-
-         } catch (IOException i) {
-            System.err.print("Error loading game with exception:\n"+i);
-            i.printStackTrace();
-            System.exit(0);
-         } catch (ClassNotFoundException c) {
-            System.out.println("Error loading game with exception:\n"+c);
-            c.printStackTrace();
-            System.exit(0);
-         }
-    }
-
-    public void saveGameValues(){
-        try {
-            FileOutputStream fileOut =
-            new FileOutputStream("./savedvalues.txt");
+            FileOutputStream fileOut = new FileOutputStream("./"+filename+".txt");
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
             // write something in the file
+            out.writeObject(getMovesPlayed());
             out.writeObject(getNumPlayers());
             out.writeObject(getBoardSize());
             out.writeObject(getCurrentPlayerNumber());
@@ -565,10 +540,11 @@ class tictactoe{
          }
     }
 
-    public void loadGameValues(){
+    public void loadGameValues(String filename){
         try {
-            FileInputStream fileIn = new FileInputStream("./savedvalues.txt");
+            FileInputStream fileIn = new FileInputStream("./"+filename+".txt");
             ObjectInputStream in = new ObjectInputStream(fileIn);
+            HashMap e = (HashMap) in.readObject();
             setNumPlayers((int) in.readObject());
             setBoardSize((int) in.readObject());
             setCurrentPlayerNumber((int) in.readObject());
@@ -576,6 +552,7 @@ class tictactoe{
             setWinSequence((int) in.readObject());
             in.close();
             fileIn.close();
+            setMovesPlayed(e);
 
          } catch (IOException i) {
             System.err.print("Error loading game with exception:\n"+i);
