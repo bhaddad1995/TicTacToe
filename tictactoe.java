@@ -544,7 +544,7 @@ class tictactoe{
         try {
             FileInputStream fileIn = new FileInputStream("./"+filename+".txt");
             ObjectInputStream in = new ObjectInputStream(fileIn);
-            HashMap e = (HashMap) in.readObject();
+            setMovesPlayed((HashMap) in.readObject());
             setNumPlayers((int) in.readObject());
             setBoardSize((int) in.readObject());
             setCurrentPlayerNumber((int) in.readObject());
@@ -552,7 +552,6 @@ class tictactoe{
             setWinSequence((int) in.readObject());
             in.close();
             fileIn.close();
-            setMovesPlayed(e);
 
          } catch (IOException i) {
             System.err.print("Error loading game with exception:\n"+i);
