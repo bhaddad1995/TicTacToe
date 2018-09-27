@@ -43,8 +43,8 @@ class tictactoe{
             game.setCurrentPlayerNumber(0);
             game.setPreviousPlayerNumber(0);
         }
-        game.DisplayBoard();
         game.setLastPlayedCell(new Pair(0,0));
+        game.DisplayBoard();
         while(!game.checkWin(game.getLastPlayedCell(), game.getPlayerTileFromPlayerNumber(game.getPreviousPlayerNumber())) && !game.checkDraw()){
             String playerTile = game.getPlayerTileFromPlayerNumber(game.getCurrentPlayerNumber());
             game.addMove(game.promptForMove(playerTile),playerTile);
@@ -173,7 +173,7 @@ class tictactoe{
     }
 
     public void setMovesPlayed(HashMap movesPlayed){
-        this.movesPlayed = movesPlayed;
+        this.movesPlayed.putAll(movesPlayed);;
     }
 
     public void addMove(Pair cell, String owner){
@@ -219,10 +219,14 @@ class tictactoe{
 
     public int checkUpLeft(Pair p, String player){
         HashMap playedMoves = getMovesPlayed();
-        if(p.getKey().hashCode()!=1 && p.getValue().hashCode()!=1){
+        if(p.getKey().hashCode()>1 && p.getValue().hashCode()>1){
             Pair adjecentPiece = getAdjecentPair(p, "upleft");
-            if(playedMoves.get(adjecentPiece) == player){
-                return checkUpLeft(adjecentPiece, player) + 1;
+            if(playedMoves.containsKey(adjecentPiece)){
+                if(playedMoves.get(adjecentPiece).equals(player)){
+                    return checkUpLeft(adjecentPiece, player) + 1;
+                }else{
+                    return 0;
+                }
             }else{
                 return 0;
             }
@@ -232,10 +236,14 @@ class tictactoe{
 
     public int checkDownRight(Pair p, String player){
         HashMap playedMoves = getMovesPlayed();
-        if(p.getKey().hashCode()!=getBoardSize() && p.getValue().hashCode()!=getBoardSize()){
+        if(p.getKey().hashCode()!=getBoardSize() && p.getValue().hashCode()!=getBoardSize() && p.getKey().hashCode()>1){
             Pair adjecentPiece = getAdjecentPair(p, "downright");
-            if(playedMoves.get(adjecentPiece) == player){
-                return checkDownRight(adjecentPiece, player) + 1;
+            if(playedMoves.containsKey(adjecentPiece)){
+                if(playedMoves.get(adjecentPiece).equals(player)){
+                    return checkDownRight(adjecentPiece, player) + 1;
+                }else{
+                    return 0;
+                }
             }else{
                 return 0;
             }
@@ -256,10 +264,14 @@ class tictactoe{
 
     public int checkUpRight(Pair p, String player){
         HashMap playedMoves = getMovesPlayed();
-        if(p.getKey().hashCode()!=1 && p.getValue().hashCode()!=getBoardSize()){
+        if(p.getKey().hashCode()>1 && p.getValue().hashCode()!=getBoardSize()){
             Pair adjecentPiece = getAdjecentPair(p, "upright");
-            if(playedMoves.get(adjecentPiece) == player){
-                return checkUpRight(adjecentPiece, player) + 1;
+            if(playedMoves.containsKey(adjecentPiece)){
+                if(playedMoves.get(adjecentPiece).equals(player)){
+                    return checkUpRight(adjecentPiece, player) + 1;
+                }else{
+                    return 0;
+                }
             }else{
                 return 0;
             }
@@ -269,10 +281,14 @@ class tictactoe{
 
     public int checkDownLeft(Pair p, String player){
         HashMap playedMoves = getMovesPlayed();
-        if(p.getKey().hashCode()!=getBoardSize() && p.getValue().hashCode()!=1){
+        if(p.getKey().hashCode()!=getBoardSize() && p.getValue().hashCode()>1){
             Pair adjecentPiece = getAdjecentPair(p, "downleft");
-            if(playedMoves.get(adjecentPiece) == player){
-                return checkDownLeft(adjecentPiece, player) + 1;
+            if(playedMoves.containsKey(adjecentPiece)){
+                if(playedMoves.get(adjecentPiece).equals(player)){
+                    return checkDownLeft(adjecentPiece, player) + 1;
+                }else{
+                    return 0;
+                }
             }else{
                 return 0;
             }
@@ -293,10 +309,14 @@ class tictactoe{
 
     public int checkUpVertical(Pair p, String player){
         HashMap playedMoves = getMovesPlayed();
-        if(p.getKey().hashCode()!=1){
+        if(p.getKey().hashCode()>1){
             Pair adjecentPiece = getAdjecentPair(p, "up");
-            if(playedMoves.get(adjecentPiece) == player){
-                return checkUpVertical(adjecentPiece, player) + 1;
+            if(playedMoves.containsKey(adjecentPiece)){
+                if(playedMoves.get(adjecentPiece).equals(player)){
+                    return checkUpVertical(adjecentPiece, player) + 1;
+                }else{
+                    return 0;
+                }
             }else{
                 return 0;
             }
@@ -306,10 +326,14 @@ class tictactoe{
 
     public int checkDownVertical(Pair p, String player){
         HashMap playedMoves = getMovesPlayed();
-        if(p.getKey().hashCode()!=getBoardSize()){
+        if(p.getKey().hashCode()!=getBoardSize() && p.getKey().hashCode()>1){
             Pair adjecentPiece = getAdjecentPair(p, "down");
-            if(playedMoves.get(adjecentPiece) == player){
-                return checkDownVertical(adjecentPiece, player) + 1;
+            if(playedMoves.containsKey(adjecentPiece)){
+                if(playedMoves.get(adjecentPiece).equals(player)){
+                    return checkDownVertical(adjecentPiece, player) + 1;
+                }else{
+                    return 0;
+                }
             }else{
                 return 0;
             }
@@ -330,10 +354,14 @@ class tictactoe{
 
     public int checkLeftHorizontal(Pair p, String player){
         HashMap playedMoves = getMovesPlayed();
-        if(p.getValue().hashCode()!=1){ //checking to see if we are at the left edge of the board
+        if(p.getValue().hashCode()>1){ //checking to see if we are at the left edge of the board
             Pair adjecentPiece = getAdjecentPair(p, "left");
-            if(playedMoves.get(adjecentPiece) == player){
-                return checkLeftHorizontal(adjecentPiece, player) + 1;
+            if(playedMoves.containsKey(adjecentPiece)){
+                if(playedMoves.get(adjecentPiece).toString().equals(player)){
+                    return checkLeftHorizontal(adjecentPiece, player) + 1;
+                }else{
+                    return 0;
+                }
             }else{
                 return 0;
             }
@@ -343,10 +371,14 @@ class tictactoe{
 
     public int checkRightHorizontal(Pair p, String player){
         HashMap playedMoves = getMovesPlayed();
-        if(p.getValue().hashCode()!=getBoardSize()){
+        if(p.getValue().hashCode()!=getBoardSize() && p.getValue().hashCode()>1){
             Pair adjecentPiece = getAdjecentPair(p, "right");
-            if(playedMoves.get(adjecentPiece) == player){
-                return checkRightHorizontal(adjecentPiece, player) + 1;
+            if(playedMoves.containsKey(adjecentPiece)){
+                if(playedMoves.get(adjecentPiece).equals(player)){
+                    return checkRightHorizontal(adjecentPiece, player) + 1;
+                }else{
+                    return 0;
+                }
             }else{
                 return 0;
             }
@@ -531,6 +563,7 @@ class tictactoe{
             out.writeObject(getCurrentPlayerNumber());
             out.writeObject(getPreviousPlayerNumber());
             out.writeObject(getWinSequence());
+            out.writeObject(getLastPlayedCell());
             out.close();
             fileOut.close();
          } catch (IOException i) {
@@ -544,12 +577,13 @@ class tictactoe{
         try {
             FileInputStream fileIn = new FileInputStream("./"+filename+".txt");
             ObjectInputStream in = new ObjectInputStream(fileIn);
-            setMovesPlayed((HashMap) in.readObject());
+            setMovesPlayed((HashMap<Pair,String>) in.readObject());
             setNumPlayers((int) in.readObject());
             setBoardSize((int) in.readObject());
             setCurrentPlayerNumber((int) in.readObject());
             setPreviousPlayerNumber((int) in.readObject());
             setWinSequence((int) in.readObject());
+            setLastPlayedCell((Pair) in.readObject());
             in.close();
             fileIn.close();
 
