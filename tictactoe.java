@@ -434,7 +434,11 @@ class tictactoe{
                     row = Integer.parseInt(numbers[0]);
                     col = Integer.parseInt(numbers[1]);
                     System.out.println("\nrow & col = "+row+" "+col);
-                    moveCheck = false;
+                    if(row <= size && row > 0 && col <= size && col > 0){  
+                        moveCheck = false;
+                    }else{
+                        moveCheck = true;
+                    }
                 }
 
             }
