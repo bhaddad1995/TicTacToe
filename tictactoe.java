@@ -10,13 +10,13 @@ import java.io.*;
 
 class tictactoe{
 
-    int boardSize;
-    int numPlayers;
+    int boardSize; //dimensions of board will be boardSize x boardSize (square)
+    int numPlayers; //number of players between 2-26
     int currentPlayerNumber;
     int previousPlayerNumber;
     int winSequence;
-    Pair lastPlayedCell;
-    HashMap movesPlayed = new HashMap<Pair,String>();
+    Pair lastPlayedCell; //used to check if previous played move caused a win
+    HashMap movesPlayed = new HashMap<Pair,String>(); //maps a pair (coordinate board cell) to a string (player tile who owns the cell)
     Scanner reader = new Scanner(System.in);  // Reading from System.in
     String[] playerTiles = {"X","O","A","B","C","D","E","F","G","H","I","J","K","L","M","N","P","Q","R","S","T","U","V","W","Y","Z"};
 
@@ -24,16 +24,16 @@ class tictactoe{
     public static void main(String[] args){
         tictactoe game = new tictactoe();
         if(game.promptUserResumeGame()){ //Ask user if they want to resume the saved game
-            game.loadGame();
+            game.loadGame(); //load previous values from saved game file
             System.out.println("\n\n-----Loaded Values-----");
             System.out.println("Number of players = "+game.getNumPlayers()+"\nBoard size = "+game.getBoardSize()+"\nCurrent player = " +game.getPlayerTileFromPlayerNumber(game.getCurrentPlayerNumber())+"\nWin sequence = "+game.getWinSequence());
             System.out.println("-----------------------\n");
         }else{ //New Game
-            game.setNumPlayers(game.getNumberOfPlayersFromUser());
+            game.setNumPlayers(game.getNumberOfPlayersFromUser()); //prompt user for number of players
             boolean boardSizeCheck = false;
             while(boardSizeCheck == false){
                 game.setBoardSize(game.getBoardSizeFromUser());
-                boardSizeCheck = game.boardSizeCheck(game.getBoardSize(), game.getNumPlayers());
+                boardSizeCheck = game.boardSizeCheck(game.getBoardSize(), game.getNumPlayers()); //check to see if inputted board 
                 if(boardSizeCheck == false){
                     System.err.print("Error: The specified board size will not accomodate the number of players entered.\n\n");
                     return;
@@ -443,6 +443,8 @@ class tictactoe{
                 System.out.print("\nMust choose a cell that is not already taken.\n\n");
                 row = 0;
                 col = 0;
+                emptyCellCheck = false;
+                moveCheck = true;
             }else{
                 emptyCellCheck = true;
             }
