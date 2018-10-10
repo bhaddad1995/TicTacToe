@@ -1,6 +1,0 @@
-{
-    "scripts": {
-        "build": "javac reversePolishCalc.java",
-        "start": "java reversePolishCalc"
-    }
-}
